@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  background-color: #e8f1fc; // light blue like in your screenshot
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.dashboard-wrapper {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}

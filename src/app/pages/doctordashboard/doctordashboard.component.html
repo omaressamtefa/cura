@@ -1,0 +1,159 @@
+<main class="flex-1 w-full">
+  <div class="dashboard-card">
+    @if (role === 'doctor') {
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-gray-600 text-lg font-medium">Total Patients</h3>
+          <i class="fas fa-users text-xl text-teal-500"></i>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">
+          {{ totalPatients }}
+        </p>
+        <p class="text-sm mt-1">
+          <span class="text-green-500">
+            <i class="fas fa-arrow-up mr-1"></i>+{{ totalPatientsChange }}% from
+            last month
+          </span>
+        </p>
+      </div>
+    </div>
+    }
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">My Patients</h2>
+      <p class="dashboard-subtitle">
+        List of all patients for Doctor
+        {{ doctorfirstName || "Doctor" }} {{ doctorlastName || "" }} in the
+        system
+      </p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-create-container">
+      <div class="search-bar">
+        <input
+          type="text"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event); onSearchChange()"
+          placeholder="Search here..."
+          class="search-input"
+        />
+        <i class="fas fa-search search-icon"></i>
+      </div>
+    </div>
+
+    @if (isLoadingPatients()) {
+    <!-- Patients Loading Spinner -->
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin text-blue-500 text-xl mr-2"></i>
+      Loading patients...
+    </div>
+    } @else if (hasErrorPatients()) {
+    <!-- Patients Error Message -->
+    <div class="error-message">
+      {{
+        errorMessagePatients() || "An error occurred while loading patients."
+      }}
+    </div>
+    } @else if (filteredPatients().length > 0) {
+    <!-- Patients List -->
+    <div class="patients-list">
+      <div class="grid-container">
+        <!-- Grid Header -->
+        <div class="grid-header">
+          <div class="header-item" style="grid-column: 1">Info</div>
+          <div class="header-item" style="grid-column: 2">Email</div>
+          <div class="header-item text-right" style="grid-column: 3">
+            Gender
+          </div>
+          <div class="header-item text-right" style="grid-column: 4">View</div>
+          <div class="header-item text-right" style="grid-column: 5">
+            Actions
+          </div>
+        </div>
+
+        <!-- Grid Rows -->
+        @for (patient of filteredPatients(); track patient.id) {
+        <div class="grid-row">
+          <!-- Info (Name) -->
+          <div class="name-column" style="grid-column: 1">
+            {{ patient.firstName }} {{ patient.lastName }}
+          </div>
+          <!-- Email -->
+          <div class="email-column" style="grid-column: 2">
+            {{ patient.email || "N/A" }}
+          </div>
+          <!-- Gender -->
+          <div class="gender-column text-right" style="grid-column: 3">
+            {{ patient.gender || "N/A" }}
+          </div>
+          <!-- View -->
+          <div class="view-column text-right" style="grid-column: 4">
+            <a (click)="viewPatient(patient.id)" class="view-button">View</a>
+          </div>
+          <!-- Actions -->
+          <div
+            class="actions-column text-right flex space-x-2"
+            style="grid-column: 5"
+          >
+            <button (click)="updatePatient(patient.id)" class="update-button">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button (click)="deletePatient(patient.id)" class="delete-button">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-container mt-6 flex justify-between items-center">
+        <div class="text-sm text-gray-600">
+          Showing {{ (currentPage - 1) * pageSize + 1 }} to
+          {{
+            currentPage * pageSize > totalItems
+              ? totalItems
+              : currentPage * pageSize
+          }}
+          of {{ totalItems }} patients
+        </div>
+        <div class="flex items-center space-x-2">
+          <button
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+            class="pagination-button"
+            aria-label="Previous page"
+          >
+            <i class="fas fa-chevron-left mr-2"></i> Previous
+          </button>
+
+          @for (page of getPageNumbers(); track page) {
+          <button
+            (click)="goToPage(page)"
+            class="pagination-button pagination-number"
+            [class.active]="currentPage === page"
+            [attr.aria-label]="'Go to page ' + page"
+            [attr.aria-current]="currentPage === page ? 'page' : null"
+          >
+            {{ page }}
+          </button>
+          }
+
+          <button
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages"
+            class="pagination-button"
+            aria-label="Next page"
+          >
+            Next <i class="fas fa-chevron-right ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    } @else {
+    <!-- Patients No Data Message -->
+    <div class="no-data-message">No patients found.</div>
+    }
+  </div>
+</main>

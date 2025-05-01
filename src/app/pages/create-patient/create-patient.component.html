@@ -1,0 +1,325 @@
+<div class="update-doctor-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 class="form-title">Create New Patient</h2>
+      <p class="form-subtitle">
+        Fill in the details to register a new patient.
+      </p>
+    </div>
+
+    <div class="error-message" [hidden]="!errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div
+      class="text-teal-500 text-sm p-4 rounded-lg bg-teal-50"
+      [hidden]="!successMessage"
+    >
+      {{ successMessage }}
+    </div>
+
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="update-form">
+      <!-- First Name -->
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          id="firstName"
+          formControlName="firstName"
+          type="text"
+          placeholder="Enter first name"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('firstName')?.invalid &&
+              patientForm.get('firstName')?.touched
+          }"
+          (input)="clearMessages()"
+        />
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('firstName')?.invalid &&
+              patientForm.get('firstName')?.touched
+            )
+          "
+        >
+          First name is required and must be at least 2 characters.
+        </span>
+      </div>
+
+      <!-- Last Name -->
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          id="lastName"
+          formControlName="lastName"
+          type="text"
+          placeholder="Enter last name"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('lastName')?.invalid &&
+              patientForm.get('lastName')?.touched
+          }"
+          (input)="clearMessages()"
+        />
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('lastName')?.invalid &&
+              patientForm.get('lastName')?.touched
+            )
+          "
+        >
+          Last name is required and must be at least 2 characters.
+        </span>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group full-width">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          formControlName="email"
+          type="email"
+          placeholder="Enter email"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('email')?.invalid &&
+              patientForm.get('email')?.touched
+          }"
+          (input)="clearMessages()"
+        />
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('email')?.invalid &&
+              patientForm.get('email')?.touched
+            )
+          "
+        >
+          <span [hidden]="!patientForm.get('email')?.errors?.['required']"
+            >Email is required.</span
+          >
+          <span [hidden]="!patientForm.get('email')?.errors?.['email']"
+            >Please enter a valid email address.</span
+          >
+        </span>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Enter password"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('password')?.invalid &&
+              patientForm.get('password')?.touched
+          }"
+          (input)="clearMessages()"
+        />
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('password')?.invalid &&
+              patientForm.get('password')?.touched
+            )
+          "
+        >
+          Password is required and must be at least 6 characters.
+        </span>
+      </div>
+
+      <!-- Birth Date -->
+      <div class="form-group">
+        <label for="birthDate">Date of Birth</label>
+        <input
+          id="birthDate"
+          formControlName="birthDate"
+          type="date"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('birthDate')?.invalid &&
+              patientForm.get('birthDate')?.touched
+          }"
+          (input)="clearMessages()"
+        />
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('birthDate')?.invalid &&
+              patientForm.get('birthDate')?.touched
+            )
+          "
+        >
+          Date of Birth is required.
+        </span>
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select
+          id="gender"
+          formControlName="gender"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('gender')?.invalid &&
+              patientForm.get('gender')?.touched
+          }"
+          (change)="clearMessages()"
+        >
+          <option value="" disabled>Select gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('gender')?.invalid &&
+              patientForm.get('gender')?.touched
+            )
+          "
+        >
+          Gender is required.
+        </span>
+      </div>
+
+      <!-- Doctor ID -->
+      <div class="form-group">
+        <label for="doctorId">Assigned Doctor</label>
+        <select
+          id="doctorId"
+          formControlName="doctorId"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('doctorId')?.invalid &&
+              patientForm.get('doctorId')?.touched
+          }"
+          (change)="clearMessages()"
+          [disabled]="doctors.length === 0"
+        >
+          <option value="" disabled>Select a doctor</option>
+          <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
+            {{ doctor.firstName }} {{ doctor.lastName }}
+          </option>
+        </select>
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('doctorId')?.invalid &&
+              patientForm.get('doctorId')?.touched
+            )
+          "
+        >
+          Assigned doctor is required.
+        </span>
+      </div>
+
+      <!-- Diagnosis -->
+      <div class="form-group full-width">
+        <label for="diagnosis">Diagnosis</label>
+        <input
+          id="diagnosis"
+          formControlName="diagnosis"
+          type="text"
+          placeholder="Enter diagnosis"
+          class="form-control"
+          [ngClass]="{
+            invalid:
+              patientForm.get('diagnosis')?.invalid &&
+              patientForm.get('diagnosis')?.touched
+          }"
+          (input)="clearMessages()"
+        />
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('diagnosis')?.invalid &&
+              patientForm.get('diagnosis')?.touched
+            )
+          "
+        >
+          Diagnosis is required.
+        </span>
+      </div>
+
+      <!-- Treatment -->
+      <div class="form-group full-width">
+        <label for="treatment">Treatment Plan</label>
+        <textarea
+          id="treatment"
+          formControlName="treatment"
+          placeholder="Enter treatment plan"
+          class="form-control"
+          rows="4"
+          [ngClass]="{
+            invalid:
+              patientForm.get('treatment')?.invalid &&
+              patientForm.get('treatment')?.touched
+          }"
+          (input)="clearMessages()"
+        ></textarea>
+        <span
+          class="error-text"
+          [hidden]="
+            !(
+              patientForm.get('treatment')?.invalid &&
+              patientForm.get('treatment')?.touched
+            )
+          "
+        >
+          Treatment plan is required.
+        </span>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="form-group full-width">
+        <label for="image">Profile Image (Optional)</label>
+        <input
+          id="image"
+          type="file"
+          accept=".jpg,.jpeg,.png,.gif"
+          class="form-control"
+          (change)="onFileChange($event)"
+        />
+        <span class="text-gray-500 text-sm mt-1"
+          >JPG, JPEG, PNG, or GIF (max 5MB)</span
+        >
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="cancel()">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="patientForm.invalid || isSubmitting"
+        >
+          <span [hidden]="isSubmitting">Create Patient</span>
+          <span [hidden]="!isSubmitting">Creating...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

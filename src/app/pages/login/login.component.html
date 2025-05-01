@@ -1,0 +1,120 @@
+<section class="min-h-screen flex items-center justify-center px-6">
+  <div
+    class="w-full max-w-4xl bg-white rounded-2xl p-10 shadow-md border border-curaLightGray/30 transition-all duration-300 hover:shadow-xl"
+  >
+    <!-- Header -->
+    <div class="text-center space-y-4 mb-10">
+      <div
+        class="inline-block p-5 bg-curaTeal rounded-full shadow-lg logo-icon relative group"
+      >
+        <img src="stethoscope.png" alt="Stethoscope" class="w-14 h-14" />
+        <div
+          class="absolute inset-0 rounded-full bg-curaSoftGreen/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        ></div>
+      </div>
+      <h2 class="text-5xl font-extrabold font-roboto text-curaDarkGray">
+        <span class="logo-text">
+          <span class="key inline-block">C</span>
+          <span class="key inline-block">u</span>
+          <span class="key inline-block">r</span>
+          <span class="key inline-block">a</span>
+        </span>
+      </h2>
+      <p class="text-curaDarkGray text-xl font-roboto title">
+        Sign in to your healthcare hub
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+      <!-- Email -->
+      <div class="relative group">
+        <input
+          formControlName="email"
+          type="email"
+          id="email"
+          autocomplete="email"
+          class="w-full px-5 py-4 rounded-lg bg-white border border-curaLightGray text-gray-800 placeholder-curaDarkGray/70 focus:border-curaTeal focus:ring-2 focus:ring-curaTeal/20 transition-all duration-300 text-lg font-roboto"
+          placeholder="Email Address"
+          (blur)="validateField('email')"
+        />
+        <i
+          class="fas fa-envelope absolute right-5 top-5 text-curaTeal text-lg group-focus-within:text-curaBlue transition-colors duration-300"
+        ></i>
+        <!-- Error: Only show "valid email" message -->
+        <div
+          class="flex items-center p-3 text-sm text-red-600 bg-red-50/90 rounded-lg border border-red-200 mt-2 animate-slide-in"
+          [class.hidden]="
+            !loginForm.get('email')?.touched ||
+            !loginForm.get('email')?.hasError('email')
+          "
+        >
+          <i class="fas fa-exclamation-circle mr-2"></i>
+          <span>Please enter a valid email</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="relative group">
+        <input
+          formControlName="password"
+          type="password"
+          id="password"
+          autocomplete="current-password"
+          class="w-full px-5 py-4 rounded-lg bg-white border border-curaLightGray text-gray-800 placeholder-curaDarkGray/70 focus:border-curaTeal focus:ring-2 focus:ring-curaTeal/20 transition-all duration-300 text-lg font-roboto"
+          placeholder="Password"
+          (blur)="validateField('password')"
+        />
+        <i
+          class="fas fa-lock absolute right-5 top-5 text-curaTeal text-lg group-focus-within:text-curaBlue transition-colors duration-300"
+        ></i>
+        <!-- Error -->
+        <div
+          class="flex items-center p-3 text-sm text-red-600 bg-red-50/90 rounded-lg border border-red-200 mt-2 animate-slide-in"
+          [class.hidden]="
+            !loginForm.get('password')?.errors ||
+            !loginForm.get('password')?.touched
+          "
+        >
+          <i class="fas fa-exclamation-circle mr-2"></i>
+          <span>Password is required</span>
+        </div>
+      </div>
+
+      <!-- Forgot Password -->
+      <div class="flex justify-end items-center">
+        <a
+          routerLink="/reset-password"
+          class="text-curaBlue hover:text-curaTeal font-medium font-roboto text-base transition-all duration-200 hover:underline hover:scale-105"
+        >
+          Forgot Password?
+        </a>
+      </div>
+
+      <!-- Server Error -->
+      <div
+        class="flex items-center p-4 text-base text-white bg-red-600/95 rounded-lg border border-red-700 mt-4 animate-slide-in"
+        [class.hidden]="!errorMessage"
+      >
+        <i class="fas fa-exclamation-triangle mr-3"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        class="w-full py-4 px-6 bg-curaTeal hover:bg-curaBlue text-white font-semibold font-roboto rounded-lg shadow-md hover:shadow-xl transition-all duration-300 relative overflow-hidden text-lg group"
+      >
+        <span class="relative z-10" [class.opacity-0]="isLoading">Sign In</span>
+        <span
+          class="absolute inset-0 flex items-center justify-center fa-spin fas fa-spinner z-10 text-2xl"
+          [class.hidden]="!isLoading"
+        ></span>
+        <div
+          class="absolute inset-0 bg-curaSoftGreen/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        ></div>
+      </button>
+    </form>
+  </div>
+</section>

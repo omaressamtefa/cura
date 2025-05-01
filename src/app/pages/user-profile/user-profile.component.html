@@ -1,0 +1,156 @@
+<section class="details-container">
+  <div class="details-card">
+    <!-- Loading Spinner -->
+    @if (isLoading) {
+    <div class="loading-spinner">
+      <svg class="spinner-icon" viewBox="0 0 24 24">
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="var(--curaTeal)"
+          stroke-width="2"
+          fill="none"
+        />
+      </svg>
+      Loading User Data...
+    </div>
+    }
+
+    <!-- Error Message -->
+    @if (hasError && !isLoading) {
+    <div class="error-message">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+    }
+
+    <!-- User Profile Details -->
+    @if (!isLoading && !hasError && user) {
+    <div class="header">
+      <h2 class="header-title">{{ getProfileTitle() }}</h2>
+      <p class="header-subtitle">
+        Comprehensive details for {{ getDisplayName() }}
+      </p>
+    </div>
+
+    <div class="profile-section">
+      <div class="avatar">
+        @if (safeImageUrl && !imageLoadFailed) {
+        <img
+          [src]="safeImageUrl"
+          alt="User Profile Image"
+          class="profile-image"
+          (error)="handleImageError()"
+        />
+        } @else {
+        <div class="avatar-icon">
+          @if (role === 'doctor') {
+          <i class="fas fa-user-md"></i>
+          } @else if (role === 'admin') {
+          <i class="fas fa-user-tie"></i>
+          } @else {
+          <i class="fas fa-user"></i>
+          }
+        </div>
+        }
+      </div>
+      <h3 class="profile-name">{{ getDisplayName() }}</h3>
+      <p class="profile-role">{{ role | titlecase }}</p>
+    </div>
+
+    <div class="details-section">
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="detail-label">Full Name</span>
+          <span class="detail-value centered-text">
+            {{
+              role === "admin" ? "Admin" : user.firstName + " " + user.lastName
+            }}
+          </span>
+        </div>
+        @if (role === 'patient') {
+        <div class="detail-item">
+          <span class="detail-label">Patient ID</span>
+          <span class="detail-value centered-text">{{ user.id || "N/A" }}</span>
+        </div>
+        }
+        <div class="detail-item">
+          <span class="detail-label">Email</span>
+          <span class="detail-value centered-text">{{
+            user.email || "N/A"
+          }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Account Type</span>
+          <span class="detail-value centered-text">{{ role | titlecase }}</span>
+        </div>
+        @if (role === 'doctor') {
+        <div class="detail-item">
+          <span class="detail-label">Specialty</span>
+          <span class="detail-value centered-text">{{
+            user.specialty || "N/A"
+          }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Number of Patients</span>
+          <span class="detail-value centered-text">{{
+            numberOfPatients || 0
+          }}</span>
+        </div>
+        } @if (role === 'patient') {
+        <div class="detail-item">
+          <span class="detail-label">Gender</span>
+          <span class="detail-value centered-text">{{
+            user.gender || "N/A"
+          }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Birth Date</span>
+          <span class="detail-value centered-text">{{
+            formatDate(user.birthDate)
+          }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Created At</span>
+          <span class="detail-value centered-text">{{
+            formatDate(user.createdAt)
+          }}</span>
+        </div>
+        } @if (role === 'patient' && user.department && user.department.length >
+        0) { @for (dept of user.department; track dept) {
+        <div class="detail-item">
+          <span class="detail-label">Diagnosis</span>
+          <span class="detail-value centered-text">{{
+            dept.diagnosis || "N/A"
+          }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Treatment</span>
+          <span class="detail-value centered-text">{{
+            dept.treatment || "N/A"
+          }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Doctor ID</span>
+          <span class="detail-value centered-text">{{
+            dept.doctorId || "N/A"
+          }}</span>
+        </div>
+
+        } } @if (user.phone) {
+        <div class="detail-item">
+          <span class="detail-label">Phone Number</span>
+          <span class="detail-value centered-text">{{ user.phone }}</span>
+        </div>
+        } @if (user.address) {
+        <div class="detail-item full-width">
+          <span class="detail-label">Address</span>
+          <span class="detail-value centered-text">{{ user.address }}</span>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</section>

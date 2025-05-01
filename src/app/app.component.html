@@ -1,0 +1,9 @@
+<div class="flex min-h-screen bg-blue-50" [ngClass]="layoutClass">
+  <!-- Sidebar -->
+  <app-navbar class="sidebar"></app-navbar>
+
+  <!-- Main Content Wrapper -->
+  <main class="flex-1 p-8 overflow-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

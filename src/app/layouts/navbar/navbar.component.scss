@@ -1,0 +1,152 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20rem; /* Same as w-80 */
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #f1f5f9
+  ); /* Softer gradient matching the dashboard */
+  border-right: 1px solid #d1d5db;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); /* Enhanced shadow for depth */
+  min-height: 100vh;
+  z-index: 50; /* Ensures it stays on top of other content */
+  padding: 2rem; /* Increased padding for a polished look */
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for the sidebar */
+.sidebar:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+  color: #1f2937; /* Darker color for better contrast */
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #60a5fa
+  ); /* Gradient text effect */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sidebar Links */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem; /* More rounded corners */
+  transition: all 0.3s ease;
+  font-size: 1.125rem; /* Adjusted font size for consistency */
+}
+
+.sidebar-link:hover {
+  background: linear-gradient(
+    90deg,
+    #e0f2fe,
+    #dbeafe
+  ); /* Gradient hover effect */
+  color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.sidebar-link.active {
+  background: linear-gradient(
+    90deg,
+    #dbeafe,
+    #bfdbfe
+  ); /* Gradient for active state */
+  color: #3b82f6;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Logout Button */
+.logout-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem; /* More rounded corners */
+  transition: all 0.3s ease;
+  font-size: 1.125rem; /* Adjusted font size */
+}
+
+.logout-button:hover {
+  background: linear-gradient(
+    90deg,
+    #fee2e2,
+    #fecaca
+  ); /* Gradient hover effect for logout */
+  color: #ef4444;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1023px) {
+  .sidebar {
+    width: 16rem; /* Slightly narrower for tablet */
+    padding: 1.5rem;
+  }
+
+  .ml-80 {
+    margin-left: 16rem; /* Adjust margin to match sidebar width */
+  }
+
+  .sidebar-link,
+  .logout-button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #d1d5db;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .ml-80 {
+    margin-left: 0; /* Remove margin for mobile */
+  }
+
+  .sidebar-title {
+    font-size: 1.5rem;
+  }
+
+  .sidebar-link,
+  .logout-button {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  nav ul li {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .ml-80 {
+    margin-left: 20rem; /* Match sidebar width on desktop */
+  }
+}

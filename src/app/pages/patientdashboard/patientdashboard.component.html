@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-[#e8f1fc] p-8">
+  <div class="bg-white rounded-2xl shadow-lg p-8">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-6">My Profile</h2>
+
+    <div *ngIf="isLoading" class="text-blue-500 text-xl mb-4">
+      <i class="fas fa-spinner fa-spin mr-2"></i> Loading profile...
+    </div>
+
+    <div *ngIf="hasError" class="text-red-500 text-xl font-medium mb-4">
+      {{ errorMessage || "An error occurred while loading your profile." }}
+    </div>
+
+    <div *ngIf="userDetails && !isLoading && !hasError">
+      <div class="flex items-center gap-4 mb-6">
+        <img
+          *ngIf="userDetails.imageUrl"
+          [src]="userDetails.imageUrl"
+          alt="Profile"
+          class="w-16 h-16 rounded-full object-cover"
+        />
+        <div>
+          <h3 class="text-2xl font-semibold text-gray-800">
+            {{ userDetails.firstName }} {{ userDetails.lastName }}
+          </h3>
+          <p class="text-gray-600">{{ userDetails.email }}</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <p class="text-gray-600 font-medium">Gender:</p>
+          <p class="text-gray-800">{{ userDetails.gender }}</p>
+        </div>
+        <div>
+          <p class="text-gray-600 font-medium">Birth Date:</p>
+          <p class="text-gray-800">
+            {{ userDetails.birthDate | date : "mediumDate" }}
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xl font-semibold text-gray-800 mb-4">
+          Treatment History
+        </h4>
+
+        <div *ngIf="userDetails.department?.length; else noHistory">
+          <div
+            class="p-4 bg-gray-50 rounded-lg space-y-2 mb-4"
+            *ngFor="let record of userDetails.department"
+          >
+            <p class="text-gray-600 font-medium">
+              Doctor: {{ record.doctorFirstName }} {{ record.doctorLastName }}
+            </p>
+            <p class="text-gray-600 font-medium">
+              Diagnosis: {{ record.diagnosis }}
+            </p>
+            <p class="text-gray-600 font-medium">
+              Treatment: {{ record.treatment }}
+            </p>
+          </div>
+        </div>
+
+        <ng-template #noHistory>
+          <p class="text-gray-600">No treatment history available.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!userDetails && !isLoading && !hasError"
+      class="text-center text-gray-600 text-xl font-medium mt-6"
+    >
+      Profile not found.
+    </div>
+  </div>
+</div>
